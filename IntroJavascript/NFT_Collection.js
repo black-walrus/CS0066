@@ -26,13 +26,14 @@ function mintNFT (name, level, type, description) {
 // create a "loop" that will go through an "array" of NFT's
 // and print their metadata with console.log()
 function listNFTs () {
-    for (var i = 0; i < getTotalSupply(); i++) 
+    for (var i = 0; i < nfts.length; i++) 
     {
         console.log(`Pokemon NFT # ${i+1}:`)
         console.log("Name: " + nfts[i]["name"])
         console.log("Description: " + nfts[i]['description'])
         console.log("Type: " + nfts[i]['type'])
         console.log("Level: " + nfts[i]['level'])
+        console.log()
     }
 }
 
@@ -42,8 +43,9 @@ function getTotalSupply() {
 }
 
 // call your functions below this line
-mintNFT("Squirtle", 10, "water", "A blue turtle")
-mintNFT("Charizard", 36, "fire/flying", "A powerful fire-type pokemon", "fire/flying")
-console.log(nfts[0])
+mintNFT("Squirtle", 5, "Water", "A turtle Pokemon with a tough shell,\n known for its ability to spray water to attack and defend");
+mintNFT("Charmander", 5, "Fire", "A lizard pokemon with a flame on its\n tail that burns brighter as it becomes stronger")
+mintNFT("Bulbasaur", 5, "Grass/Poison", "A Pokemon resembling a dinosaur with a plant bulb\n on its back, which grows as it evolves")
 
 listNFTs()
+getTotalSupply()
