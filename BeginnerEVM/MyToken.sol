@@ -26,13 +26,13 @@ contract MyToken {
     mapping(address => uint) balances; 
 
     // mint function
-    function mintNFT(address addr, uint value) public {
+    function mintToken(address addr, uint value) public {
         totalSupply += value; 
         balances[addr] += value;
     }
 
     // burn function
-    function burnNFT(address addr, uint value) public {
+    function burnToken(address addr, uint value) public {
         if (balances[addr] >= value) {
             balances[addr] -= value;
             totalSupply -= value; 
