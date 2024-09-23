@@ -15,7 +15,7 @@ pragma solidity 0.8.27;
        to the amount that is supposed to be burned.
 */
 
-contract PokeTokenMinter {
+contract MyToken {
 
     // public variables here
     string public tokenName = "PokeToken"; 
