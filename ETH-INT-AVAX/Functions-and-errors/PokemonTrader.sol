@@ -16,6 +16,8 @@ contract PokemonTrader {
         bool exists; 
     }
 
+    uint constant tradeCost = 100; 
+
     mapping(address => Trainer) public trainers; 
     mapping(address => mapping(uint => Pokemon)) public party;
 
@@ -42,7 +44,9 @@ contract PokemonTrader {
         require(party[msg.sender][pokemonNoTrader1].level != 0);
         require(party[trainerID][pokemonNoTrader2].level != 0); 
 
-        
+        if (trainers[msg.sender].pkt < tradeCost || trainers[trainerID].pkt < tradeCost) {
+            revert("Trade Failed! Either Traders have insufficient PKT (100) to trade."); 
+        }
     }
     function getPokemon(address trainerID, uint pokemonNo) view public returns (Pokemon memory)  {
         require(trainers[trainerID].exists);
