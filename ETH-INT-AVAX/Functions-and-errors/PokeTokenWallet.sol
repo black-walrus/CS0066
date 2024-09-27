@@ -1,25 +1,52 @@
 // SPDX-License-Identifier: MIT 
-pragma solidity 0.8.27; 
+pragma solidity 0.8.27;
+//pragma experimental ABIEncoderV2; 
 
-contract PokeTokenWallet {
-    uint public balance = 0; 
+contract PokemonTrader {
 
-    function deposit(uint amount) public {
-        require(amount > 0, "Transaction Invalid! Must deposit more than 0 PKT!");
-        balance += amount; 
-
-        assert(balance >= amount);
+    struct Pokemon {
+        string name;
+        uint level;
     }
 
-    function withdraw(uint amount) public {
-        require(amount > 0, "Transaction Invalid! Must withdraw more than 0 PKT!");
-
-        if (amount > balance) {
-            revert("Transaction Invalid! Insufficient PKT!");
-        }
-
-        balance -= amount; 
-
-        assert(balance >= 0);
+    struct Trainer {
+        string name; 
+        uint pkt; 
+        uint partySize;
+        bool exists; 
     }
-} 
+
+    mapping(address => Trainer) public trainers; 
+    mapping(address => mapping(uint => Pokemon)) public party;
+
+    function addTrainer(address trainerID, string memory _name, uint _pkt) public {
+        require(!trainers[trainerID].exists, "Pokemon Trainer already exists!");
+
+        trainers[trainerID] = Trainer({name : _name, pkt : _pkt, partySize: 0, exists: true}); 
+    }
+
+    function addPokemon(address trainerID, string memory _name, uint _level) public {
+        require(trainers[trainerID].exists, "Pokemon Trainer does not exist!"); 
+
+        uint index = trainers[trainerID].partySize;
+        party[trainerID][index] = Pokemon(_name, _level);
+
+        trainers[trainerID].partySize += 1; 
+
+        assert(party[trainerID][index].level != 0);
+    }
+
+    function tradePokemon(uint pokemonNoTrader1, address trainerID, uint pokemonNoTrader2) public {
+        require(trainers[msg.sender].exists, "Trade Failed! Pokemon Trade Requestor does not exist!"); 
+        require(trainers[trainerID].exists, "Trade Failed! Requested Pokemon Trader does not exist!");
+        require(party[msg.sender][pokemonNoTrader1].level != 0);
+        require(party[trainerID][pokemonNoTrader2].level != 0); 
+
+        
+    }
+    function getPokemon(address trainerID, uint pokemonNo) view public returns (Pokemon memory)  {
+        require(trainers[trainerID].exists);
+
+        return party[trainerID][pokemonNo];  
+    }
+}
