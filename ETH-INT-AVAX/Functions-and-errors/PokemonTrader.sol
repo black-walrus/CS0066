@@ -41,8 +41,8 @@ contract PokemonTrader {
     function tradePokemon(uint pokemonNoTrader1, address trainerID, uint pokemonNoTrader2) public {
         require(trainers[msg.sender].exists, "Trade Failed! Pokemon Trade Requestor does not exist!"); 
         require(trainers[trainerID].exists, "Trade Failed! Requested Pokemon Trader does not exist!");
-        require(party[msg.sender][pokemonNoTrader1].level != 0);
-        require(party[trainerID][pokemonNoTrader2].level != 0); 
+        require(party[msg.sender][pokemonNoTrader1].level != 0, "Trade Failed! Trading Pokemon does not exist!");
+        require(party[trainerID][pokemonNoTrader2].level != 0, "Trade Failed! Requested Pokemon does not exist!"); 
 
         if (trainers[msg.sender].pkt < tradeCost || trainers[trainerID].pkt < tradeCost) {
             revert("Trade Failed! Either Traders have insufficient PKT (100) to trade."); 
@@ -59,6 +59,7 @@ contract PokemonTrader {
 
         // assert(party[msg.sender][pokemonNoTrader1] != pokemon1); 
     }
+
     function getPokemon(address trainerID, uint pokemonNo) view public returns (Pokemon memory)  {
         require(trainers[trainerID].exists);
 
