@@ -47,6 +47,17 @@ contract PokemonTrader {
         if (trainers[msg.sender].pkt < tradeCost || trainers[trainerID].pkt < tradeCost) {
             revert("Trade Failed! Either Traders have insufficient PKT (100) to trade."); 
         }
+
+        Pokemon memory pokemon1 = party[msg.sender][pokemonNoTrader1];  
+        Pokemon memory pokemon2 = party[trainerID][pokemonNoTrader2]; 
+
+        party[msg.sender][pokemonNoTrader1] = pokemon2; 
+        party[trainerID][pokemonNoTrader2] = pokemon1; 
+
+        trainers[msg.sender].pkt -= tradeCost; 
+        trainers[trainerID].pkt -= tradeCost; 
+
+        // assert(party[msg.sender][pokemonNoTrader1] != pokemon1); 
     }
     function getPokemon(address trainerID, uint pokemonNo) view public returns (Pokemon memory)  {
         require(trainers[trainerID].exists);
