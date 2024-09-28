@@ -7,6 +7,7 @@ contract PokemonTrader {
     struct Pokemon {
         string name;
         uint level;
+        uint pokemonID; 
     }
 
     struct Trainer {
@@ -16,6 +17,7 @@ contract PokemonTrader {
         bool exists; 
     }
 
+    uint private createID = 1;
     uint constant tradeCost = 100; 
 
     mapping(address => Trainer) public trainers; 
@@ -31,8 +33,9 @@ contract PokemonTrader {
         require(trainers[trainerID].exists, "Pokemon Trainer does not exist!"); 
 
         uint index = trainers[trainerID].partySize;
-        party[trainerID][index] = Pokemon(_name, _level);
+        party[trainerID][index] = Pokemon(_name, _level, createID);
 
+        createID += 1; 
         trainers[trainerID].partySize += 1; 
 
         assert(party[trainerID][index].level != 0);
@@ -57,7 +60,9 @@ contract PokemonTrader {
         trainers[msg.sender].pkt -= tradeCost; 
         trainers[trainerID].pkt -= tradeCost; 
 
-        // assert(party[msg.sender][pokemonNoTrader1] != pokemon1); 
+        
+        assert(party[msg.sender][pokemonNoTrader1].pokemonID != pokemon1.pokemonID && 
+               party[trainerID][pokemonNoTrader2].pokemonID != pokemon2.pokemonID); 
     }
 
     function getPokemon(address trainerID, uint pokemonNo) view public returns (Pokemon memory)  {
