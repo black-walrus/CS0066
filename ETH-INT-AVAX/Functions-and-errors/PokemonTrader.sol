@@ -25,13 +25,16 @@ contract PokemonTrader {
 
     function addTrainer(address trainerID, string memory _name, uint _pkt) public {
         require(!trainers[trainerID].exists, "Pokemon Trainer already exists!");
+        require(bytes(_name).length != 0, "Trainer Name must not be empty!"); 
 
         trainers[trainerID] = Trainer({name : _name, pkt : _pkt, partySize: 0, exists: true}); 
     }
 
     function addPokemon(address trainerID, string memory _name, uint _level) public {
         require(trainers[trainerID].exists, "Pokemon Trainer does not exist!"); 
-
+        require(bytes(_name).length != 0, "Pokemon Name must not be empty!");
+        require(_level > 0, "Pokemon Level must greater than 0!"); 
+        
         uint index = trainers[trainerID].partySize;
         party[trainerID][index] = Pokemon(_name, _level, createID);
 
