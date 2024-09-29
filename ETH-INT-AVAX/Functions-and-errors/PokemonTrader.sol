@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT 
 pragma solidity 0.8.27;
 
-
 contract PokemonTrader {
 
     struct Pokemon {
@@ -69,7 +68,8 @@ contract PokemonTrader {
     }
 
     function getPokemon(address trainerID, uint pokemonNo) view public returns (Pokemon memory)  {
-        require(trainers[trainerID].exists);
+        require(trainers[trainerID].exists, "Pokemon Trainer does not exist!");
+        require(party[trainerID][pokemonNo].level != 0, "Requested Pokemon does not exist!");
 
         return party[trainerID][pokemonNo];  
     }
